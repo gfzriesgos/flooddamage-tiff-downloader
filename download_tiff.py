@@ -10,7 +10,14 @@ import shutil
 import requests
 
 def download_tiff_from_url(base_url, coverage_id, destination_file):
-    url = base_url + 'CoverageId={0}'.format(coverage_id)
+    if not base_url.endswith('?'):
+        base_url += '?'
+    url = base_url + \
+            'service=WCS&' + \
+            'version=2.0.0&' + \
+            'request=GetCoverage&' + \
+            'format=image/tiff&' + \
+            'CoverageId={0}'.format(coverage_id)
     res = requests.get(url, verify=False, stream=True)
 
     if res.status_code == 200:
